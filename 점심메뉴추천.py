@@ -33,7 +33,10 @@ def preferingCate(n):
     preferCate[-1]+=a
 #확률 구하기:
 probability=[0]*allnum_cate#초기 설정 
-            
+
+#상대적인 선호도
+prefer=[0]*allnum_cate
+
 #교집합 함수 설정: 겹치는 카테고리를 조사
 def Intersection(manu_name,selected_category):#a=메뉴이름을, b=카테고리의 번호를 입력
     for i in range(allnum_cate):#카테고리 수만큼
@@ -59,10 +62,10 @@ def function1():#랜덤뽑기함수/function1
             break
         elif Q_procate=="아니오":
             break
-        elif Q_procate!="아니오":
+        else:
             print("숫자 또는 아니오를 입력해주세요.")
             continue
-    if Q_procate!="아니오": #카테고리고르기/O
+    if Q_procate.isdigit(): #카테고리고르기/O
         random_manu(Q_procate)
     else:#카테고리고르기/X
 
@@ -127,11 +130,18 @@ while True:
     elif Q_function=="bye":
         print("Bye!")
         break
+    #확률 구하기
     for i in range(allnum_cate):
         if i>=1:
             probability[i]=(preferCate[i]-preferCate[i-1])/preferCate[-1]
         elif i==0:
             probability[i]=preferCate[i]/preferCate[-1]
-    print(f"선호도:{preferCate}")
+    #상대적인 선호도 구하기
+    for i in range(1,allnum_cate):
+        prefer[i]=preferCate[i]-preferCate[i-1]
+    prefer[0]=preferCate[0]
+    #마지막
+    print(f"각 카테고리에 대한 선호도:{prefer}")
+    print(f"선호도 범위:{preferCate}")
     print(f"확률:{probability}")
     count+=1
